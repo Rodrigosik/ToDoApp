@@ -54,6 +54,31 @@ ng e2e
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
+## Code Quality Tools
+
+This project includes the following tools for code quality and consistency:
+
+### ESLint & Angular ESLint
+- **eslint** (^8.57.0): JavaScript/TypeScript linting
+- **@angular-eslint/builder** (^21.1.0): Angular ESLint builder
+- **@angular-eslint/eslint-plugin** (^21.1.0): Angular-specific ESLint rules
+- **@angular-eslint/eslint-plugin-template** (^21.1.0): Angular template linting
+- **@angular-eslint/schematics** (^21.1.0): Angular ESLint schematics
+- **@angular-eslint/template-parser** (^21.1.0): Parser for Angular templates
+- **@typescript-eslint/eslint-plugin** (^7.18.0): TypeScript ESLint plugin
+- **@typescript-eslint/parser** (^7.18.0): TypeScript parser for ESLint
+
+### Prettier
+- **prettier** (^3.8.0): Code formatter
+- **prettier-eslint** (^16.4.2): Integration between Prettier and ESLint
+- **eslint-config-prettier** (^10.1.8): Disables ESLint rules that conflict with Prettier
+- **eslint-plugin-prettier** (^5.5.5): Runs Prettier as an ESLint rule
+
+### Git Hooks & Commit Standards
+- **husky** (^9.1.7): Git hooks management
+- **@commitlint/cli** (^20.3.1): Commit message linting
+- **@commitlint/config-conventional** (^20.3.1): Conventional commit standards
+
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
