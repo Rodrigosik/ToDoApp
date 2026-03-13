@@ -1,0 +1,23 @@
+<div
+  class="task-card"
+  draggable="true"
+  [class.priority-high]="task().priority === 'high'"
+  [class.priority-medium]="task().priority === 'medium'"
+  [class.priority-low]="task().priority === 'low'"
+>
+  <h4>{{ task().title }}</h4>
+  <p>{{ task().description }}</p>
+
+  <div class="task-meta">
+    <span class="priority">{{ task().priority }}</span>
+    @if (task().dueDate) {
+      <span class="due-date"> {{ task().dueDate }}</span>
+    }
+  </div>
+
+  <div class="tags">
+    @for (tag of task().tags; track tag) {
+      <span class="tag">{{ tag }}</span>
+    }
+  </div>
+</div>

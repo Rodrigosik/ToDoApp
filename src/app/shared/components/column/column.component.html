@@ -1,0 +1,8 @@
+<div class="column" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+  <h3>{{ column().title }}</h3>
+  <button (click)="addTask()">Nueva Tarea</button>
+
+  @for (task of column().tasks; track task.id) {
+    <app-task-card [task]="task" (dragstart)="onDragStart($event, task)" />
+  }
+</div>

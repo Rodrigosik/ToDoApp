@@ -1,0 +1,16 @@
+<div class="board">
+  @if (!isAddingColumn()) {
+    <button (click)="toggleAddColumn()">Agregar Columna</button>
+  } @else {
+    <app-column-form
+      (closeForm)="toggleAddColumn()"
+      (nameColumn)="addColumn($event)"
+    ></app-column-form>
+  }
+
+  <div class="columns-container">
+    @for (column of columns(); track column.id) {
+      <app-column [column]="column" (taskMoved)="onTaskMoved($event)" />
+    }
+  </div>
+</div>
