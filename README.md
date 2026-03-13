@@ -76,6 +76,7 @@ This project includes the following tools for code quality and consistency:
 
 ### Git Hooks & Commit Standards
 - **husky** (^9.1.7): Git hooks management
+- **lint-staged** (^15.3.1): Run linters on git staged files
 - **@commitlint/cli** (^20.3.1): Commit message linting
 - **@commitlint/config-conventional** (^20.3.1): Conventional commit standards
 
