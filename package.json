@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "freya:install": "node scripts/clean-install.js",
     "start": "ng serve -o",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",

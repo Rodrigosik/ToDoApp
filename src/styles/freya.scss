@@ -1,0 +1,57 @@
+@use 'node_modules/freya/styles/tokens/frey-tokens.scss';
+@use 'node_modules/freya/styles/button/button.scss';
+@use 'node_modules/freya/styles/form/form.scss';
+@use 'node_modules/freya/styles/timepicker/timepicker.scss';
+@use 'node_modules/freya/styles/datepicker/datepicker.scss';
+@use 'node_modules/freya/styles/alert/alert.scss';
+@use 'node_modules/freya/styles/modal/modal.scss';
+@use 'node_modules/freya/styles/tooltip/tooltip.scss';
+@use 'node_modules/freya/styles/checkbox/checkbox.scss';
+
+:root {
+  --frey-color-primary: #6d4f3e; // base
+  --frey-color-primary-hover: #8c6a56; // más claro
+  --frey-color-primary-active: #523828; // más oscuro
+  --frey-shadow-primary: 0 0 0 2px rgba(109, 79, 62, 0.5); // sombra con base
+}
+
+frey-modal .modal__body {
+  border-radius: 7px;
+}
+
+frey-modal .modal__cross:after {
+  content: '\d7';
+  color: var(--frey-color-primary);
+  position: absolute;
+  width: 1.6875rem;
+  height: 1.6875rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
+  top: -7px;
+  right: -7px;
+  cursor: pointer;
+}
+
+frey-modal .modal__cross:before {
+  content: ' ';
+  position: absolute;
+  top: -0.625rem;
+  right: -0.625rem;
+  background: var(--frey-color-primary);
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+frey-alert .alert__icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+frey-prefix i-lucide svg {
+  width: 16px;
+  height: 16px;
+}
