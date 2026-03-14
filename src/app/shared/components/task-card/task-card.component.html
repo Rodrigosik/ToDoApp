@@ -23,6 +23,12 @@
     <p class="task-card__description">{{ task().description }}</p>
   </div>
 
+  <div class="task-card__tags">
+    @for (tag of task().tags; track tag) {
+      <span class="tag">{{ tag }}</span>
+    }
+  </div>
+
   <div class="task-card__meta">
     <i-lucide class="task-card__calendar" [img]="icons.calendarDays"></i-lucide>
     @if (task().dueDate) {
@@ -43,11 +49,5 @@
     <frey-checkbox [readonly]="true" [value]="task().status">
       {{ task().status ? 'Completada' : 'Pendiente' }}
     </frey-checkbox>
-  </div>
-
-  <div class="task-card__tags">
-    @for (tag of task().tags; track tag) {
-      <span class="tag">{{ tag }}</span>
-    }
   </div>
 </div>

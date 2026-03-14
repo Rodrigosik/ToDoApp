@@ -46,7 +46,11 @@ export class TaskFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.dataSource) {
-      this.formGroup.patchValue(this.dataSource);
+      const patch = { ...this.dataSource };
+      if (Array.isArray(patch.tags)) {
+        patch.tags = patch.tags.join(', ');
+      }
+      this.formGroup.patchValue(patch);
     }
   }
 
@@ -55,7 +59,14 @@ export class TaskFormComponent implements OnInit {
       this.formGroup.markAllAsTouched();
       return;
     }
-    this.confirmEvent.emit(this.formGroup.value);
+    const tagsInput = this.formGroup.get('tags').value;
+    console.log('tagsInput', tagsInput);
+    const tagsArray = tagsInput ? tagsInput.split(',').map(t => t.trim()) : [];
+
+    this.confirmEvent.emit({
+      ...this.formGroup.value,
+      tags: tagsArray,
+    });
   }
 
   private buildForm(): void {
@@ -63,7 +74,7 @@ export class TaskFormComponent implements OnInit {
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
       priority: [],
-      tags: [], //TODO:
+      tags: [],
       dueDate: [null, [Validators.required]],
       status: [],
     });

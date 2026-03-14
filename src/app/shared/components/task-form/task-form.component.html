@@ -17,6 +17,7 @@
       formControlName="description"
       placeholder="Ingresa la descripción de la tarea"
       [maxlength]="500"
+      style="min-height: 150px"
     ></textarea>
   </frey-field>
 
@@ -43,6 +44,11 @@
       [freyDatepicker]="datepicker"
       [min]="minDate()"
     />
+  </frey-field>
+
+  <frey-field>
+    <frey-label>Etiquetas (separadas por comas)</frey-label>
+    <input freyInput formControlName="tags" placeholder="Bug, Feature, Urgente" />
   </frey-field>
 
   <div>
