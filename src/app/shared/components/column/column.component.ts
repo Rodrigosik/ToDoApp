@@ -3,7 +3,7 @@ import { FreyButtonDirective } from 'freya/button';
 import { FreyModalConfigModel, FreyModalService } from 'freya/modal';
 import { Ellipsis, LucideAngularModule, Plus } from 'lucide-angular';
 import { Observable } from 'rxjs';
-import { ColumnModel, TaskModel } from 'src/app/core/services';
+import { ColumnModel, TaskModel, TaskService } from 'src/app/core/services';
 import { TaskCardComponent } from '../task-card/task-card.component';
 import { TaskFormComponent } from '../task-form/task-form.component';
 
@@ -23,11 +23,20 @@ export class ColumnComponent {
   };
 
   private readonly modalService = inject(FreyModalService);
+  private readonly taskService = inject(TaskService);
 
   addTask(): void {
     this.openTaskForm().subscribe(result => {
       if (result) {
-        console.log('Nueva tarea creada:', result);
+        // Agregar la tarea usando el servicio con persistencia offline
+        this.taskService.addTask(this.column().id, {
+          title: result.title,
+          description: result.description,
+          priority: result.priority || 'medium',
+          tags: result.tags || [],
+          dueDate: result.dueDate || null,
+          status: 'pending',
+        });
       }
     });
   }
