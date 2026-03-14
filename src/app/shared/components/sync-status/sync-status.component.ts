@@ -3,9 +3,9 @@ import { Component, inject } from '@angular/core';
 import { FreyButtonDirective } from 'freya/button';
 import {
   CircleCheckBig,
+  Cloud,
   LucideAngularModule,
   RefreshCw,
-  Wifi,
   WifiOff,
 } from 'lucide-angular';
 import { BoardSyncService } from 'src/app/core/features/board/services';
@@ -21,7 +21,7 @@ export class SyncStatusComponent {
   readonly syncService = inject(BoardSyncService);
 
   readonly icons = {
-    wifi: Wifi,
+    cloud: Cloud,
     wifiOff: WifiOff,
     refreshCw: RefreshCw,
     checkCircle: CircleCheckBig,

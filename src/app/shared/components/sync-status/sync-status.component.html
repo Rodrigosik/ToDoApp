@@ -1,17 +1,9 @@
 <div class="status">
   <div class="status__icon">
     @if (syncService.isOnline()) {
-      <lucide-icon
-        class="status__lucide status__lucide--online"
-        [img]="icons.wifi"
-        [size]="16"
-      />
+      <lucide-icon class="status__lucide status__lucide--online" [img]="icons.cloud" />
     } @else {
-      <lucide-icon
-        class="status__lucide status__lucide--offline"
-        [img]="icons.wifiOff"
-        [size]="16"
-      />
+      <lucide-icon class="status__lucide status__lucide--offline" [img]="icons.wifiOff" />
     }
   </div>
 

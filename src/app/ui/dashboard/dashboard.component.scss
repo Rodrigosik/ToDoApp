@@ -5,7 +5,10 @@
 }
 
 .header {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px -4px rgba(0, 0, 0, 0.08);
 }
 
 .sync-status-wrapper,
