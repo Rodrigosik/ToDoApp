@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FreyButtonDirective } from 'freya/button';
 import { FreyCheckboxComponent } from 'freya/checkbox';
@@ -31,6 +31,7 @@ export class TaskFormComponent implements OnInit {
   readonly icons = {
     calendar: CalendarDays,
   };
+  readonly minDate = signal(new Date(Date.now() - 24 * 60 * 60 * 1000));
 
   private readonly formbuilder = inject(FormBuilder);
 
