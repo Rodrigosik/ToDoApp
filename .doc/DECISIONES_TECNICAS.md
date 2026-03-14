@@ -14,7 +14,7 @@ El modelo de datos se basa en dos entidades principales:
 
 **ColumnModel**: Representa las columnas del tablero Kanban con propiedades `id`, `title`, `order` y una colección de `tasks`. Esta estructura permite organizar jerárquicamente las tareas dentro de columnas y facilita el reordenamiento mediante el campo `order`.
 
-**TaskModel**: Define las tareas individuales con atributos como `id`, `title`, `description`, `priority`, `columnId` (referencia a la columna padre) y `order`. La relación mediante `columnId` permite mover tareas entre columnas sin reestructurar toda la colección.
+**TaskModel**: Define las tareas individuales con atributos como `id`, `title`, `description`, `priority`, `tags`, `dueDate`, `status`, `columnId` (referencia a la columna padre) y `order` (posición dentro de la columna). La relación mediante `columnId` permite mover tareas entre columnas sin reestructurar toda la colección, mientras que `order` mantiene el ordenamiento específico del usuario mediante drag and drop.
 
 La arquitectura implementa **Domain Driven Design (DDD)** organizando el código en capas: entidades de dominio (models), repositorios para abstracción de persistencia, y servicios de dominio que encapsulan lógica de negocio. Esta separación por responsabilidades facilita el mantenimiento y permite cambiar la implementación de persistencia sin afectar la lógica de negocio.
 

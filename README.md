@@ -35,7 +35,7 @@ El navegador se abrirá automáticamente en `http://localhost:4200/`. La aplicac
 - **rxjs**: ~7.8.0 - Programación reactiva con Observables
 
 ### UI Components
-- **@angular/cdk**: ^21.2.2 - Componentes y utilidades de Angular CDK
+- **@angular/cdk**: ^21.2.2 - Componentes y utilidades de Angular CDK (Drag & Drop)
 - **freya**: ^0.0.1 (local) - Librería personalizada de componentes UI
 - **lucide-angular**: ^0.577.0 - Iconos modernos y ligeros
 
@@ -240,6 +240,21 @@ toggleAddColumn() {
 - Computed values automáticos
 - Actualizaciones optimistas instantáneas
 - Sincronización con RxJs cuando es necesario (HTTP)
+
+### Drag and Drop
+
+El proyecto implementa **drag and drop completo** usando Angular CDK:
+
+**Funcionalidades:**
+- **Reordenar columnas**: Arrastra columnas horizontalmente para cambiar su orden
+- **Reordenar tareas**: Reorganiza tareas dentro de una misma columna
+- **Mover entre columnas**: Arrastra tareas de una columna a otra
+- **Persistencia automática**: Todos los cambios se guardan instantáneamente
+
+**Implementación:**
+- Uso de Angular CDK `DragDropModule` para drag and drop nativo
+- Animaciones suaves y feedback visual durante el arrastre
+- Drop lists conectadas para movimiento entre columnas
 
 ## 📝 Scripts Disponibles
 
