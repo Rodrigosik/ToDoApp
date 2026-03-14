@@ -1,14 +1,19 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FreyButtonDirective } from 'freya/button';
 import { LucideAngularModule, Plus } from 'lucide-angular';
-import { ColumnModel, TaskService } from 'src/app/core/services';
-import { ColumnComponent, ColumnFormComponent } from 'src/app/shared';
+import { ColumnService, TaskService } from 'src/app/core/services';
+import {
+  ColumnComponent,
+  ColumnFormComponent,
+  SyncStatusComponent,
+} from 'src/app/shared';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
     ColumnComponent,
     ColumnFormComponent,
+    SyncStatusComponent,
     LucideAngularModule,
     FreyButtonDirective,
   ],
@@ -17,22 +22,17 @@ import { ColumnComponent, ColumnFormComponent } from 'src/app/shared';
 })
 export class DashboardComponent {
   isAddingColumn = signal(false);
-  columns = signal<ColumnModel[]>([]);
+  columnList = computed(() => this.columnService.columnsSignal());
 
   readonly icons = {
     plus: Plus,
   };
 
+  private readonly columnService = inject(ColumnService);
   private readonly taskService = inject(TaskService);
 
   addColumn(columnName: string): void {
-    const column = new ColumnModel();
-    column.id = crypto.randomUUID();
-    column.title = columnName;
-    column.tasks = [];
-    column.order = 0;
-
-    this.columns.update(columns => [...columns, column]);
+    this.columnService.addColumn(columnName);
     this.toggleAddColumn();
   }
 
