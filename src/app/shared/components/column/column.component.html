@@ -1,9 +1,22 @@
 <div class="column">
   <div class="column__header">
     <h3 class="column__title">{{ column().title }}</h3>
-    <button freyButton size="small" variant="ghost" [iconOnly]="true">
-      <i-lucide [img]="icons.ellipsis"></i-lucide>
-    </button>
+    <div class="menu-trigger">
+      <button
+        freyButton
+        size="small"
+        variant="ghost"
+        [iconOnly]="true"
+        (click)="toggleMenu($event)"
+      >
+        <i-lucide [img]="icons.ellipsis"></i-lucide>
+      </button>
+      <app-menu
+        [options]="menuOptions"
+        [show]="showMenu()"
+        (selected)="onMenuSelect($event)"
+      ></app-menu>
+    </div>
   </div>
 
   <button freyButton size="small" (click)="addTask()">

@@ -1,0 +1,35 @@
+:host {
+  --menu-bg: #fff;
+  --menu-border: #ddd;
+  --menu-radius: 0.25rem;
+  --menu-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+  --menu-hover-bg: #f2f2f2;
+
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 100;
+}
+
+.menu {
+  background: var(--menu-bg);
+  border: 1px solid var(--menu-border);
+  border-radius: var(--menu-radius);
+  box-shadow: var(--menu-shadow);
+  min-width: 7.5rem; // 120px = 7.5rem
+  display: flex;
+  flex-direction: column;
+
+  &__button {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+
+    &:hover {
+      background: var(--menu-hover-bg);
+    }
+  }
+}

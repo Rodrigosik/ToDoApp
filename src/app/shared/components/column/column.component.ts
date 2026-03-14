@@ -1,15 +1,16 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, HostListener, inject, input, output, signal } from '@angular/core';
 import { FreyButtonDirective } from 'freya/button';
 import { FreyModalConfigModel, FreyModalService } from 'freya/modal';
 import { Ellipsis, LucideAngularModule, Plus } from 'lucide-angular';
 import { Observable } from 'rxjs';
 import { ColumnModel, TaskModel, TaskService } from 'src/app/core/services';
+import { MenuComponent } from '../menu/menu.component';
 import { TaskCardComponent } from '../task-card/task-card.component';
 import { TaskFormComponent } from '../task-form/task-form.component';
 
 @Component({
   selector: 'app-column',
-  imports: [TaskCardComponent, FreyButtonDirective, LucideAngularModule],
+  imports: [TaskCardComponent, FreyButtonDirective, LucideAngularModule, MenuComponent],
   templateUrl: './column.component.html',
   styleUrl: './column.component.scss',
   host: {
@@ -20,6 +21,8 @@ import { TaskFormComponent } from '../task-form/task-form.component';
 export class ColumnComponent {
   column = input<ColumnModel>();
   taskMoved = output<any>();
+  showMenu = signal(false);
+  menuOptions = [{ label: 'Eliminar', value: 'delete' }];
 
   readonly icons = {
     ellipsis: Ellipsis,
@@ -58,6 +61,25 @@ export class ColumnComponent {
     const taskId = event.dataTransfer?.getData('taskId');
     if (taskId) {
       this.taskMoved.emit({ taskId, targetColumnId: this.column().id });
+    }
+  }
+
+  toggleMenu(event: MouseEvent): void {
+    event.stopPropagation();
+    this.showMenu.set(!this.showMenu());
+  }
+
+  onMenuSelect(option: string): void {
+    this.showMenu.set(false);
+    if (option === 'delete') {
+      // lógica para eliminar
+    }
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    if (this.showMenu()) {
+      this.showMenu.set(false);
     }
   }
 
