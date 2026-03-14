@@ -57,3 +57,14 @@
 .task-card__priority--high {
   background: var(--color-priority-high);
 }
+
+.menu-trigger {
+  position: relative;
+  display: inline-block;
+}
+
+.task-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

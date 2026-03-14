@@ -1,6 +1,25 @@
 <div class="task-card" draggable="true">
-  <div class="task-card__body">
+  <div class="task-card__header">
     <h4>{{ task().title }}</h4>
+    <div class="menu-trigger">
+      <button
+        freyButton
+        size="small"
+        variant="ghost"
+        [iconOnly]="true"
+        (click)="toggleMenu($event)"
+      >
+        <i-lucide [img]="icons.ellipsis"></i-lucide>
+      </button>
+      <app-menu
+        [options]="menuOptions"
+        [show]="showMenu()"
+        (selected)="onMenuSelect($event)"
+      ></app-menu>
+    </div>
+  </div>
+
+  <div class="task-card__body">
     <p class="task-card__description">{{ task().description }}</p>
   </div>
 
