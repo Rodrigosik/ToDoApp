@@ -12,6 +12,10 @@ import { TaskFormComponent } from '../task-form/task-form.component';
   imports: [TaskCardComponent, FreyButtonDirective, LucideAngularModule],
   templateUrl: './column.component.html',
   styleUrl: './column.component.scss',
+  host: {
+    '(drop)': 'onDrop($event)',
+    '(dragover)': 'onDragOver($event)',
+  },
 })
 export class ColumnComponent {
   column = input<ColumnModel>();
