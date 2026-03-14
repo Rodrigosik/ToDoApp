@@ -1,4 +1,4 @@
-<form class="column-form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+<form class="task" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
   <frey-field>
     <frey-label>Nombre de la tarea</frey-label>
     <input
@@ -33,7 +33,7 @@
   </frey-field>
 
   <frey-field>
-    <frey-prefix (click)="datepicker.open()">
+    <frey-prefix (click)="datepicker.open()" style="cursor: pointer">
       <i-lucide [img]="icons.calendar"></i-lucide>
     </frey-prefix>
     <frey-label>Fecha límite</frey-label>
@@ -57,7 +57,7 @@
     >
   </div>
 
-  <div class="column-form__footer">
+  <div class="task__footer">
     <button freyButton type="submit">Guardar</button>
     <button freyButton type="button" variant="ghost" (click)="closeEvent.emit()">
       Cancelar

@@ -20,3 +20,37 @@
   overflow-x: auto;
   flex: 1;
 }
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin: auto;
+  text-align: center;
+  gap: 1rem;
+}
+
+.empty__svg {
+  width: 50%;
+}
+
+.empty__actions {
+  margin: auto;
+}
+
+.empty__title {
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: #23272f;
+  letter-spacing: -0.5px;
+  margin-bottom: 0.5rem;
+  line-height: 1.15;
+}
+
+.empty__description {
+  font-size: 1.1rem;
+  color: #7a7a7a;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}

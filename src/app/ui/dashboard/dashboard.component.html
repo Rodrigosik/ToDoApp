@@ -1,25 +1,49 @@
-<div class="header">
-  <div class="sync-status-wrapper">
-    <app-sync-status />
+@if (columnList().length !== 0) {
+  <div class="header">
+    <div class="sync-status-wrapper">
+      <app-sync-status />
+    </div>
   </div>
-</div>
-
-<div class="board">
-  @for (column of columnList(); track column.id) {
-    <app-column [column]="column" (taskMoved)="onTaskMoved($event)" />
-  }
-
-  <div>
-    @if (!isAddingColumn()) {
-      <button class="add" freyButton (click)="toggleAddColumn()">
-        <i-lucide [img]="icons.plus"></i-lucide>
-        <span>Agregar Columna</span>
-      </button>
-    } @else {
-      <app-column-form
-        (closeForm)="toggleAddColumn()"
-        (nameColumn)="addColumn($event)"
-      ></app-column-form>
+  <div class="board">
+    @for (column of columnList(); track column.id) {
+      <app-column [column]="column" (taskMoved)="onTaskMoved($event)" />
     }
+
+    <div>
+      @if (!isAddingColumn()) {
+        <button class="add" freyButton (click)="toggleAddColumn()">
+          <i-lucide [img]="icons.plus"></i-lucide>
+          <span>Agregar Columna</span>
+        </button>
+      } @else {
+        <app-column-form
+          (closeForm)="toggleAddColumn()"
+          (nameColumn)="addColumn($event)"
+        ></app-column-form>
+      }
+    </div>
   </div>
-</div>
+} @else {
+  <div class="empty">
+    <figure>
+      <img src="empty.svg" alt="Tablero vacío" class="empty__svg" />
+    </figure>
+    <h1 class="empty__title">¡Empieza tu primer tablero agregando una columna!</h1>
+    <span class="empty__description"
+      >Organiza tus tareas y proyectos de manera eficiente.</span
+    >
+    <div class="empty__actions">
+      @if (!isAddingColumn()) {
+        <button freyButton (click)="toggleAddColumn()">
+          <i-lucide [img]="icons.plus"></i-lucide>
+          <span>Agregar Columna</span>
+        </button>
+      } @else {
+        <app-column-form
+          (closeForm)="toggleAddColumn()"
+          (nameColumn)="addColumn($event)"
+        ></app-column-form>
+      }
+    </div>
+  </div>
+}
