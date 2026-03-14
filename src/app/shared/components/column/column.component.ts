@@ -3,7 +3,12 @@ import { FreyButtonDirective } from 'freya/button';
 import { FreyModalConfigModel, FreyModalService } from 'freya/modal';
 import { Ellipsis, LucideAngularModule, Plus } from 'lucide-angular';
 import { Observable } from 'rxjs';
-import { ColumnModel, TaskModel, TaskService } from 'src/app/core/services';
+import {
+  ColumnModel,
+  ColumnService,
+  TaskModel,
+  TaskService,
+} from 'src/app/core/services';
 import { MenuComponent } from '../menu/menu.component';
 import { TaskCardComponent } from '../task-card/task-card.component';
 import { TaskFormComponent } from '../task-form/task-form.component';
@@ -31,6 +36,7 @@ export class ColumnComponent {
 
   private readonly modalService = inject(FreyModalService);
   private readonly taskService = inject(TaskService);
+  private readonly columnService = inject(ColumnService);
 
   addTask(): void {
     this.openTaskForm().subscribe(result => {
@@ -65,7 +71,7 @@ export class ColumnComponent {
   onMenuSelect(option: string): void {
     this.showMenu.set(false);
     if (option === 'delete') {
-      // lógica para eliminar
+      this.columnService.deleteColumn(this.column().id);
     }
   }
 

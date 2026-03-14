@@ -58,7 +58,7 @@ export class TaskCardComponent {
   onMenuSelect(option: string): void {
     this.showMenu.set(false);
     if (option === 'delete') {
-      // lógica para eliminar
+      this.taskService.deleteTask(this.task().id);
     } else if (option === 'edit') {
       this.openTaskForm().subscribe(result => {
         if (result) {
