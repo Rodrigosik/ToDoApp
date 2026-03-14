@@ -1,68 +1,88 @@
 import { Injectable } from '@angular/core';
-import { ColumnModel } from '../column/column.model';
+import { safeParse, safeStringify } from 'src/app/utils/helpers';
+import { IStorageService } from '../../interfaces';
 
+/**
+ * Servicio de Storage
+ * Responsabilidad ÚNICA: Manejar localStorage de forma genérica
+ * No conoce sobre columnas, tareas, ni metadatos específicos
+ */
 @Injectable({
   providedIn: 'root',
 })
-export class StorageService {
-  private readonly COLUMNS_KEY = 'test_columns';
-  private readonly METADATA_KEY = 'test_metadata';
-
-  saveColumns(columns: ColumnModel[]): void {
+export class StorageService implements IStorageService {
+  /**
+   * Obtiene un valor del localStorage y lo deserializa
+   */
+  get<T>(key: string): T | null {
     try {
-      localStorage.setItem(this.COLUMNS_KEY, JSON.stringify(columns));
-      this.updateMetadata();
-      console.log('Guardado en localStorage:', columns.length, 'columnas');
+      const item = localStorage.getItem(key);
+      return safeParse<T>(item);
     } catch (error) {
-      console.error('Error guardando en localStorage:', error);
+      console.error(`Error obteniendo clave "${key}":`, error);
+      return null;
     }
   }
 
-  getColumns(): ColumnModel[] {
+  /**
+   * Guarda un valor en localStorage serializándolo
+   */
+  set<T>(key: string, value: T): void {
     try {
-      const stored = localStorage.getItem(this.COLUMNS_KEY);
-      if (!stored) {
-        return [];
+      const serialized = safeStringify(value);
+      if (serialized !== null) {
+        localStorage.setItem(key, serialized);
       }
-
-      const columns = JSON.parse(stored) as ColumnModel[];
-      console.log('Cargado desde localStorage:', columns.length, 'columnas');
-      return columns;
     } catch (error) {
-      console.error('Error leyendo localStorage:', error);
-      return [];
-    }
-  }
-
-  clearAll(): void {
-    localStorage.removeItem(this.COLUMNS_KEY);
-    localStorage.removeItem(this.METADATA_KEY);
-    console.log('localStorage limpiado');
-  }
-
-  getMetadata(): { lastModified: Date | null; columnsCount: number } {
-    try {
-      const stored = localStorage.getItem(this.METADATA_KEY);
-      if (!stored) {
-        return { lastModified: null, columnsCount: 0 };
+      if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+        console.error('localStorage lleno. Considera limpiar datos antiguos.');
+      } else {
+        console.error(`Error guardando clave "${key}":`, error);
       }
-
-      const metadata = JSON.parse(stored);
-      return {
-        lastModified: metadata.lastModified ? new Date(metadata.lastModified) : null,
-        columnsCount: metadata.columnsCount || 0,
-      };
-    } catch {
-      return { lastModified: null, columnsCount: 0 };
     }
   }
 
-  private updateMetadata(): void {
-    const columns = this.getColumns();
-    const metadata = {
-      lastModified: new Date().toISOString(),
-      columnsCount: columns.length,
-    };
-    localStorage.setItem(this.METADATA_KEY, JSON.stringify(metadata));
+  /**
+   * Elimina una clave específica
+   */
+  remove(key: string): void {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.error(`Error eliminando clave "${key}":`, error);
+    }
+  }
+
+  /**
+   * Limpia todo el localStorage
+   */
+  clear(): void {
+    try {
+      localStorage.clear();
+    } catch (error) {
+      console.error('Error limpiando localStorage:', error);
+    }
+  }
+
+  /**
+   * Verifica si existe una clave
+   */
+  has(key: string): boolean {
+    return localStorage.getItem(key) !== null;
+  }
+
+  /**
+   * Obtiene todas las claves disponibles
+   */
+  keys(): string[] {
+    return Object.keys(localStorage);
+  }
+
+  /**
+   * Limpia claves que coincidan con un prefijo
+   */
+  clearByPrefix(prefix: string): void {
+    const keysToRemove = this.keys().filter(key => key.startsWith(prefix));
+    keysToRemove.forEach(key => this.remove(key));
   }
 }

@@ -1,13 +1,14 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, of, tap } from 'rxjs';
+import { ColumnModel } from 'src/app/utils/models';
+import { getStorageKey } from '../../config';
 import { ApiService } from '../api/api.service';
-import { ColumnModel } from '../column/column.model';
 import { StorageService } from '../storage/storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SyncService {
+export class BoardSyncService {
   isSyncing = signal(false);
   isOnline = signal(navigator.onLine);
   pendingSyncs = signal(0);
@@ -15,6 +16,7 @@ export class SyncService {
 
   private readonly api = inject(ApiService);
   private readonly storage = inject(StorageService);
+  private readonly storageKey = getStorageKey('COLUMNS');
 
   constructor() {
     this.setupOnlineDetection();
@@ -52,7 +54,7 @@ export class SyncService {
     if (this.pendingSyncs() > 0 && this.isOnline()) {
       console.log('Reintentando sincronización pendiente...');
 
-      const currentColumns = this.storage.getColumns();
+      const currentColumns = this.storage.get<ColumnModel[]>(this.storageKey) || [];
 
       if (currentColumns.length > 0) {
         // Sincronizar el estado actual con la API

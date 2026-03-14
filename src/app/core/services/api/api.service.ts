@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { delay, Observable, of } from 'rxjs';
-import { ColumnModel } from '../column/column.model';
-import { TaskModel } from '../task/task.model';
+import { ColumnModel, TaskModel } from 'src/app/utils/models';
 
 @Injectable({
   providedIn: 'root',

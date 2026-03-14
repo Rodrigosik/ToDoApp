@@ -5,8 +5,9 @@ import { FreyCheckboxComponent } from 'freya/checkbox';
 import { FreyModalConfigModel, FreyModalService } from 'freya/modal';
 import { CalendarDays, Ellipsis, LucideAngularModule } from 'lucide-angular';
 import { Observable } from 'rxjs';
-import { TaskModel, TaskService } from 'src/app/core/services';
+import { BoardStateService } from 'src/app/core/services';
 import { PRIORITYLIST } from 'src/app/utils/constants';
+import { TaskModel } from 'src/app/utils/models';
 import { LookupPipe } from '../../pipes';
 import { MenuComponent } from '../menu/menu.component';
 import { PriorityComponent } from '../priority/priority.component';
@@ -42,7 +43,7 @@ export class TaskCardComponent {
   };
 
   private readonly modalService = inject(FreyModalService);
-  private readonly taskService = inject(TaskService);
+  private readonly boardState = inject(BoardStateService);
 
   toggleMenu(): void {
     const isOpen = this.showMenu();
@@ -57,11 +58,11 @@ export class TaskCardComponent {
   onMenuSelect(option: string): void {
     this.showMenu.set(false);
     if (option === 'delete') {
-      this.taskService.deleteTask(this.task().id);
+      this.boardState.deleteTask(this.task().id);
     } else if (option === 'edit') {
       this.openTaskForm().subscribe(result => {
         if (result) {
-          this.taskService.updateTask(this.task().id, result);
+          this.boardState.updateTask(this.task().id, result);
         }
       });
     }

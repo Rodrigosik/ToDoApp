@@ -3,13 +3,9 @@ import { FreyButtonDirective } from 'freya/button';
 import { FreyModalConfigModel, FreyModalService } from 'freya/modal';
 import { Ellipsis, LucideAngularModule, Plus } from 'lucide-angular';
 import { Observable } from 'rxjs';
-import {
-  ColumnModel,
-  ColumnService,
-  TaskModel,
-  TaskService,
-} from 'src/app/core/services';
 
+import { BoardStateService } from 'src/app/core/services';
+import { ColumnModel, TaskModel } from 'src/app/utils/models';
 import { ColumnUpdateComponent } from '../column-update/column-update.component';
 import { MenuComponent } from '../menu/menu.component';
 import { TaskCardComponent } from '../task-card/task-card.component';
@@ -40,14 +36,13 @@ export class ColumnComponent {
   };
 
   private readonly modalService = inject(FreyModalService);
-  private readonly taskService = inject(TaskService);
-  private readonly columnService = inject(ColumnService);
+  private readonly boardState = inject(BoardStateService);
 
   addTask(): void {
     this.openTaskForm().subscribe(result => {
       if (result) {
         // Agregar la tarea usando el servicio con persistencia offline
-        this.taskService.addTask(this.column().id, result);
+        this.boardState.addTask(this.column().id, result);
       }
     });
   }
@@ -57,7 +52,7 @@ export class ColumnComponent {
       if (result) {
         // Editar la columna usando el servicio con persistencia offline
         const updatedColumn = { ...this.column(), title: result };
-        this.columnService.updateColumn(this.column().id, updatedColumn);
+        this.boardState.updateColumn(this.column().id, updatedColumn);
       }
     });
   }
@@ -91,7 +86,7 @@ export class ColumnComponent {
   onMenuSelect(option: string): void {
     this.showMenu.set(false);
     if (option === 'delete') {
-      this.columnService.deleteColumn(this.column().id);
+      this.boardState.deleteColumn(this.column().id);
     }
     if (option === 'edit') {
       this.editColumn();

@@ -8,7 +8,7 @@ import {
   Wifi,
   WifiOff,
 } from 'lucide-angular';
-import { SyncService } from 'src/app/core/services';
+import { BoardSyncService } from 'src/app/core/services';
 
 @Component({
   selector: 'app-sync-status',
@@ -18,7 +18,7 @@ import { SyncService } from 'src/app/core/services';
   styleUrl: './sync-status.component.scss',
 })
 export class SyncStatusComponent {
-  readonly syncService = inject(SyncService);
+  readonly syncService = inject(BoardSyncService);
 
   readonly icons = {
     wifi: Wifi,

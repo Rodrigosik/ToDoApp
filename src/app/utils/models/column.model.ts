@@ -1,4 +1,4 @@
-import { TaskModel } from '../task/task.model';
+import { TaskModel } from './task.model';
 
 export class ColumnModel {
   id: string;
