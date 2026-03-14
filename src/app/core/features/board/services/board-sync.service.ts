@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { getStorageKey } from 'src/app/core/shared/config/storage.config';
-import { BaseSyncService } from 'src/app/core/shared/services/sync/base-sync.service';
+import { getStorageKey } from 'src/app/core/shared/config';
+import { BaseSyncService } from 'src/app/core/shared/services';
 import { ColumnModel } from '../models';
 import { BoardApiService } from './board-api.service';
 

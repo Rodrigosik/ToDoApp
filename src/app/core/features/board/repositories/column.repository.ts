@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { getStorageKey } from 'src/app/core/shared/config/storage.config';
-import { IRepository } from 'src/app/core/shared/interfaces/repository.interface';
-import { StorageService } from 'src/app/core/shared/services/storage/storage.service';
+import { getStorageKey } from 'src/app/core/shared/config';
+import { IRepository } from 'src/app/core/shared/interfaces';
+import { StorageService } from 'src/app/core/shared/services';
 import { generateId } from 'src/app/utils/helpers';
 import { ColumnModel } from '../models';
 
