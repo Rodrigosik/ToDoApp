@@ -1,0 +1,15 @@
+<span
+  class="priority-text"
+  [class.priority-text--low]="status() === priorityEnum.LOW"
+  [class.priority-text--medium]="status() === priorityEnum.MEDIUM"
+  [class.priority-text--high]="status() === priorityEnum.HIGH"
+>
+  <!-- {{ task().priority | lookup: priorityList }} -->
+  <ng-content></ng-content>
+</span>
+<div
+  class="priority"
+  [class.priority--low]="status() === priorityEnum.LOW"
+  [class.priority--medium]="status() === priorityEnum.MEDIUM"
+  [class.priority--high]="status() === priorityEnum.HIGH"
+></div>

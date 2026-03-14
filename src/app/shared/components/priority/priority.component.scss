@@ -1,0 +1,38 @@
+:host {
+  --color-priority-low: #64b5f6;
+  --color-priority-medium: #ffcc80;
+  --color-priority-high: #ff8a80;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.priority-text--low {
+  color: var(--color-priority-low);
+}
+
+.priority-text--medium {
+  color: var(--color-priority-medium);
+}
+
+.priority-text--high {
+  color: var(--color-priority-high);
+}
+
+.priority {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+}
+
+.priority--low {
+  background: var(--color-priority-low);
+}
+
+.priority--medium {
+  background: var(--color-priority-medium);
+}
+
+.priority--high {
+  background: var(--color-priority-high);
+}

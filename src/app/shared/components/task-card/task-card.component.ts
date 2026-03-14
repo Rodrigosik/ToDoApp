@@ -3,31 +3,25 @@ import { Component, HostListener, inject, input, signal } from '@angular/core';
 import { FreyButtonDirective } from 'freya/button';
 import { FreyCheckboxComponent } from 'freya/checkbox';
 import { FreyModalConfigModel, FreyModalService } from 'freya/modal';
-import { FreyTooltipDirective } from 'freya/tooltip';
 import { CalendarDays, Ellipsis, LucideAngularModule } from 'lucide-angular';
 import { Observable } from 'rxjs';
 import { TaskModel, TaskService } from 'src/app/core/services';
 import { PRIORITYLIST } from 'src/app/utils/constants';
 import { LookupPipe } from '../../pipes';
 import { MenuComponent } from '../menu/menu.component';
+import { PriorityComponent } from '../priority/priority.component';
 import { TaskFormComponent } from '../task-form/task-form.component';
-
-enum PriorityEnum {
-  LOW = 1,
-  MEDIUM = 2,
-  HIGH = 3,
-}
 
 @Component({
   selector: 'app-task-card',
   imports: [
     DatePipe,
     LucideAngularModule,
-    FreyTooltipDirective,
     LookupPipe,
     MenuComponent,
     FreyButtonDirective,
     FreyCheckboxComponent,
+    PriorityComponent,
   ],
   templateUrl: './task-card.component.html',
   styleUrl: './task-card.component.scss',
@@ -35,7 +29,7 @@ enum PriorityEnum {
 export class TaskCardComponent {
   task = input<TaskModel>();
   priorityList = [...PRIORITYLIST];
-  priorityEnum = PriorityEnum;
+
   showMenu = signal(false);
   menuOptions = [
     { label: 'Editar', value: 'edit' },

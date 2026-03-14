@@ -1,6 +1,6 @@
 <div class="task-card" draggable="true">
   <div class="task-card__header">
-    <h4>{{ task().title }}</h4>
+    <h4 class="task-card__title">{{ task().title }}</h4>
     <div class="menu-trigger">
       <button
         freyButton
@@ -35,13 +35,9 @@
       <span class="due-date"> {{ task().dueDate | date: 'dd/MM/yyyy' }}</span>
     }
     <div class="task-card__priority-container">
-      <div
-        class="task-card__priority"
-        [class.task-card__priority--low]="task().priority === priorityEnum.LOW"
-        [class.task-card__priority--medium]="task().priority === priorityEnum.MEDIUM"
-        [class.task-card__priority--high]="task().priority === priorityEnum.HIGH"
-        [freyTooltip]="task().priority | lookup: priorityList"
-      ></div>
+      <app-priority [status]="task().priority">
+        {{ task().priority | lookup: priorityList }}
+      </app-priority>
     </div>
   </div>
 
