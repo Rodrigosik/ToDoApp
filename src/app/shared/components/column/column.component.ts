@@ -4,8 +4,8 @@ import { FreyModalConfigModel, FreyModalService } from 'freya/modal';
 import { Ellipsis, LucideAngularModule, Plus } from 'lucide-angular';
 import { Observable } from 'rxjs';
 
-import { BoardStateService } from 'src/app/core/services';
-import { ColumnModel, TaskModel } from 'src/app/utils/models';
+import { ColumnModel, TaskModel } from 'src/app/core/features/board/models';
+import { BoardStateService } from 'src/app/core/features/board/services';
 import { ColumnUpdateComponent } from '../column-update/column-update.component';
 import { MenuComponent } from '../menu/menu.component';
 import { TaskCardComponent } from '../task-card/task-card.component';

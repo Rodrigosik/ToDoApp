@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { safeParse, safeStringify } from 'src/app/utils/helpers';
-import { IStorageService } from '../../interfaces';
+import { IStorageService } from '../../interfaces/repository.interface';
 
 /**
  * Servicio de Storage

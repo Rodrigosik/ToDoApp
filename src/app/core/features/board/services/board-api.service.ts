@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
 import { delay, Observable, of } from 'rxjs';
-import { ColumnModel, TaskModel } from 'src/app/utils/models';
+import { ColumnModel } from '../models/column.model';
+import { TaskModel } from '../models/task.model';
 
+/**
+ * Servicio API del Board
+ * Responsabilidad: Simular llamadas a la API del board
+ * En producción, esto haría llamadas HTTP reales
+ */
 @Injectable({
   providedIn: 'root',
 })
-export class ApiService {
+export class BoardApiService {
   private readonly DELAY_MS = 500;
 
   // Simula la obtención de columnas desde un servidor

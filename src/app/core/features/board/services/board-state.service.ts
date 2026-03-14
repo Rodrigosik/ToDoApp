@@ -1,8 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs';
-import { ColumnModel, TaskModel } from 'src/app/utils/models';
-import { ColumnRepository, TaskRepository } from '../../repositories';
-import { BoardSyncService } from '../board-sync/board-sync.service';
+import { ColumnModel, TaskModel } from '../models';
+import { ColumnRepository, TaskRepository } from '../repositories';
+import { BoardSyncService } from './board-sync.service';
 
 /**
  * Servicio de Estado del Board

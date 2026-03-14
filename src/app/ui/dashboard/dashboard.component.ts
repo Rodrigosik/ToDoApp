@@ -1,7 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FreyButtonDirective } from 'freya/button';
 import { LucideAngularModule, Plus } from 'lucide-angular';
-import { BoardStateService } from 'src/app/core/services';
+import { BoardStateService } from 'src/app/core/features/board/services';
+
 import {
   ColumnComponent,
   ColumnFormComponent,

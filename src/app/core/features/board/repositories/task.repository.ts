@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { getStorageKey } from 'src/app/core/shared/config/storage.config';
+import { StorageService } from 'src/app/core/shared/services/storage/storage.service';
 import { generateId } from 'src/app/utils/helpers';
-import { ColumnModel, TaskModel } from 'src/app/utils/models';
-import { getStorageKey } from '../config';
-import { StorageService } from '../services';
+import { ColumnModel, TaskModel } from '../models';
 
 /**
  * Repositorio de Tareas

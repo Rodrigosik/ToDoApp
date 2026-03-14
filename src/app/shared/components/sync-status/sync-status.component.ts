@@ -8,7 +8,7 @@ import {
   Wifi,
   WifiOff,
 } from 'lucide-angular';
-import { BoardSyncService } from 'src/app/core/services';
+import { BoardSyncService } from 'src/app/core/features/board/services';
 
 @Component({
   selector: 'app-sync-status',

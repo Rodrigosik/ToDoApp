@@ -1,28 +1,30 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { catchError, of, tap } from 'rxjs';
-import { ColumnModel } from 'src/app/utils/models';
-import { getStorageKey } from '../../config';
-import { ApiService } from '../api/api.service';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class BoardSyncService {
-  isSyncing = signal(false);
-  isOnline = signal(navigator.onLine);
-  pendingSyncs = signal(0);
-  lastSyncTime = signal<Date>(null);
+/**
+ * Servicio Base de Sincronización
+ * Responsabilidad: Lógica genérica de sincronización online/offline
+ * Los servicios específicos deben extender esta clase
+ */
+@Injectable()
+export abstract class BaseSyncService<T> {
+  // Signals públicos para el estado de sincronización
+  readonly isSyncing = signal(false);
+  readonly isOnline = signal(navigator.onLine);
+  readonly pendingSyncs = signal(0);
+  readonly lastSyncTime = signal<Date | null>(null);
 
-  private readonly api = inject(ApiService);
-  private readonly storage = inject(StorageService);
-  private readonly storageKey = getStorageKey('COLUMNS');
+  protected readonly storage = inject(StorageService);
 
   constructor() {
     this.setupOnlineDetection();
   }
 
-  syncColumns(columns: ColumnModel[]): void {
+  /**
+   * Sincroniza datos con la API
+   */
+  sync(data: T[]): void {
     if (!this.isOnline()) {
       console.log('Offline: Sincronización pendiente');
       this.pendingSyncs.update(count => count + 1);
@@ -31,11 +33,10 @@ export class BoardSyncService {
 
     this.isSyncing.set(true);
 
-    this.api
-      .saveColumns(columns)
+    this.saveToApi(data)
       .pipe(
         tap(() => {
-          console.log('Columnas sincronizadas con servidor');
+          console.log('Datos sincronizados con servidor');
           this.lastSyncTime.set(new Date());
           this.pendingSyncs.set(0);
         }),
@@ -50,23 +51,37 @@ export class BoardSyncService {
       });
   }
 
+  /**
+   * Reintenta sincronizar datos pendientes
+   */
   retrySyncPending(): void {
     if (this.pendingSyncs() > 0 && this.isOnline()) {
       console.log('Reintentando sincronización pendiente...');
 
-      const currentColumns = this.storage.get<ColumnModel[]>(this.storageKey) || [];
+      const storedData = this.storage.get<T[]>(this.getStorageKey()) || [];
 
-      if (currentColumns.length > 0) {
-        // Sincronizar el estado actual con la API
-        this.syncColumns(currentColumns);
+      if (storedData.length > 0) {
+        this.sync(storedData);
       } else {
-        // No hay datos para sincronizar, resetear contador
         this.pendingSyncs.set(0);
         console.log('No hay datos pendientes para sincronizar');
       }
     }
   }
 
+  /**
+   * Método abstracto: cada feature define su storage key
+   */
+  protected abstract getStorageKey(): string;
+
+  /**
+   * Método abstracto: cada feature define cómo guardar en la API
+   */
+  protected abstract saveToApi(data: T[]): Observable<T[]>;
+
+  /**
+   * Configura detección de conexión online/offline
+   */
   private setupOnlineDetection(): void {
     window.addEventListener('online', () => {
       console.log('Conexión restaurada');
