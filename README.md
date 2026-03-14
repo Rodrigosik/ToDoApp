@@ -35,6 +35,7 @@ El navegador se abrirá automáticamente en `http://localhost:4200/`. La aplicac
 - **rxjs**: ~7.8.0 - Programación reactiva con Observables
 
 ### UI Components
+- **@angular/cdk**: ^21.2.2 - Componentes y utilidades de Angular CDK
 - **freya**: ^0.0.1 (local) - Librería personalizada de componentes UI
 - **lucide-angular**: ^0.577.0 - Iconos modernos y ligeros
 

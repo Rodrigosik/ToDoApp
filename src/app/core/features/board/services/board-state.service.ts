@@ -134,7 +134,10 @@ export class BoardStateService {
   /**
    * Agrega una nueva tarea a una columna
    */
-  addTask(columnId: string, taskData: Omit<TaskModel, 'id' | 'columnId'>): void {
+  addTask(
+    columnId: string,
+    taskData: Omit<TaskModel, 'id' | 'columnId' | 'order'>
+  ): void {
     this.taskRepo
       .create(columnId, taskData)
       .pipe(
@@ -183,9 +186,9 @@ export class BoardStateService {
   /**
    * Mueve una tarea de una columna a otra
    */
-  moveTask(taskId: string, targetColumnId: string): void {
+  moveTask(taskId: string, targetColumnId: string, targetIndex?: number): void {
     this.taskRepo
-      .move(taskId, targetColumnId)
+      .move(taskId, targetColumnId, targetIndex)
       .pipe(
         tap(movedTask => {
           // Actualizar estado local
@@ -200,9 +203,15 @@ export class BoardStateService {
               }
               // Agregar a columna destino
               if (col.id === targetColumnId) {
+                const newTasks = [...col.tasks];
+                if (targetIndex !== undefined) {
+                  newTasks.splice(targetIndex, 0, movedTask);
+                } else {
+                  newTasks.push(movedTask);
+                }
                 return {
                   ...col,
-                  tasks: [...col.tasks, movedTask],
+                  tasks: newTasks,
                 };
               }
               return col;
@@ -262,5 +271,29 @@ export class BoardStateService {
   getTasksByColumn(columnId: string): TaskModel[] {
     const column = this.columns().find(c => c.id === columnId);
     return column?.tasks || [];
+  }
+
+  /**
+   * Reordena tareas dentro de una columna
+   */
+  reorderTasks(columnId: string, taskIds: string[]): void {
+    this.taskRepo
+      .reorder(columnId, taskIds)
+      .pipe(
+        tap(reorderedTasks => {
+          // Actualizar estado local
+          this.columnsSignal.update(cols =>
+            cols.map(col =>
+              col.id === columnId ? { ...col, tasks: reorderedTasks } : col
+            )
+          );
+
+          // Sincronizar
+          this.sync.syncColumns(this.columns());
+
+          console.log('Tareas reordenadas en columna:', columnId);
+        })
+      )
+      .subscribe();
   }
 }

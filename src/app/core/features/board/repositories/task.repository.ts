@@ -47,7 +47,7 @@ export class TaskRepository {
    */
   create(
     columnId: string,
-    taskData: Omit<TaskModel, 'id' | 'columnId'>
+    taskData: Omit<TaskModel, 'id' | 'columnId' | 'order'>
   ): Observable<TaskModel> {
     const columns = this.getColumns();
     const columnIndex = columns.findIndex(c => c.id === columnId);
@@ -60,6 +60,7 @@ export class TaskRepository {
       ...taskData,
       id: generateId(),
       columnId,
+      order: columns[columnIndex].tasks.length, // Nueva tarea al final
     };
 
     columns[columnIndex] = {
@@ -100,7 +101,11 @@ export class TaskRepository {
   /**
    * Mueve una tarea de una columna a otra
    */
-  move(taskId: string, targetColumnId: string): Observable<TaskModel> {
+  move(
+    taskId: string,
+    targetColumnId: string,
+    targetIndex?: number
+  ): Observable<TaskModel> {
     const columns = this.getColumns();
     let taskToMove: TaskModel | null = null;
     let sourceColumnId: string | null = null;
@@ -120,7 +125,7 @@ export class TaskRepository {
     }
 
     // Si ya está en la columna destino, no hacer nada
-    if (sourceColumnId === targetColumnId) {
+    if (sourceColumnId === targetColumnId && targetIndex === undefined) {
       return of(taskToMove);
     }
 
@@ -134,9 +139,19 @@ export class TaskRepository {
       }
       if (column.id === targetColumnId) {
         const movedTask = { ...taskToMove!, columnId: targetColumnId };
+        const newTasks = [...column.tasks];
+
+        // Insertar en posición específica o al final
+        if (targetIndex !== undefined) {
+          newTasks.splice(targetIndex, 0, movedTask);
+        } else {
+          newTasks.push(movedTask);
+        }
+
+        // Actualizar order de todas las tareas
         return {
           ...column,
-          tasks: [...column.tasks, movedTask],
+          tasks: newTasks.map((task, index) => ({ ...task, order: index })),
         };
       }
       return column;
@@ -145,6 +160,35 @@ export class TaskRepository {
     this.saveColumns(updatedColumns);
 
     return of({ ...taskToMove, columnId: targetColumnId });
+  }
+
+  /**
+   * Reordena tareas dentro de una columna
+   */
+  reorder(columnId: string, taskIds: string[]): Observable<TaskModel[]> {
+    const columns = this.getColumns();
+    const columnIndex = columns.findIndex(c => c.id === columnId);
+
+    if (columnIndex === -1) {
+      throw new Error(`Columna con ID ${columnId} no encontrada`);
+    }
+
+    // Crear mapa de tareas por ID para acceso rápido
+    const tasksMap = new Map(columns[columnIndex].tasks.map(task => [task.id, task]));
+
+    // Reordenar según el array de IDs y actualizar order
+    const reorderedTasks = taskIds
+      .map(id => tasksMap.get(id))
+      .filter((task): task is TaskModel => task !== undefined)
+      .map((task, index) => ({ ...task, order: index }));
+
+    columns[columnIndex] = {
+      ...columns[columnIndex],
+      tasks: reorderedTasks,
+    };
+
+    this.saveColumns(columns);
+    return of(reorderedTasks);
   }
 
   /**

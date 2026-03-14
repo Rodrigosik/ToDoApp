@@ -1,6 +1,8 @@
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, computed, inject, signal } from '@angular/core';
 import { FreyButtonDirective } from 'freya/button';
 import { LucideAngularModule, Plus } from 'lucide-angular';
+import { ColumnModel } from 'src/app/core/features/board/models';
 import { BoardStateService } from 'src/app/core/features/board/services';
 
 import {
@@ -17,6 +19,7 @@ import {
     SyncStatusComponent,
     LucideAngularModule,
     FreyButtonDirective,
+    DragDropModule,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -24,6 +27,7 @@ import {
 export class DashboardComponent {
   isAddingColumn = signal(false);
   columnList = computed(() => this.boardState.columns());
+  columnIds = computed(() => this.columnList().map(col => `task-list-${col.id}`));
 
   readonly icons = {
     plus: Plus,
@@ -32,7 +36,6 @@ export class DashboardComponent {
   private readonly boardState = inject(BoardStateService);
 
   constructor() {
-    // Inicializar el estado del board al crear el componente
     this.boardState.initialize();
   }
 
@@ -41,8 +44,18 @@ export class DashboardComponent {
     this.toggleAddColumn();
   }
 
-  onTaskMoved(event: { taskId: string; targetColumnId: string }): void {
-    this.boardState.moveTask(event.taskId, event.targetColumnId);
+  onTaskMoved(event: {
+    taskId: string;
+    targetColumnId: string;
+    targetIndex?: number;
+  }): void {
+    this.boardState.moveTask(event.taskId, event.targetColumnId, event.targetIndex);
+  }
+
+  onColumnDrop(event: CdkDragDrop<ColumnModel[]>): void {
+    const columns = [...this.columnList()];
+    moveItemInArray(columns, event.previousIndex, event.currentIndex);
+    this.boardState.reorderColumns(columns);
   }
 
   toggleAddColumn(): void {

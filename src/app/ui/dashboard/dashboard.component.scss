@@ -57,3 +57,32 @@
   margin-bottom: 0.5rem;
   line-height: 1.4;
 }
+
+/* Estilos para drag and drop de columnas */
+.column-drag-wrapper {
+  cursor: grabbing;
+}
+
+/* Animación cuando se está arrastrando una columna */
+.cdk-drag-preview {
+  opacity: 0.8;
+  box-shadow: 0 0.3125rem 1.25rem rgba(0, 0, 0, 0.2); /* 5px 20px */
+  border-radius: 0.5rem;
+}
+
+/* Placeholder mientras se arrastra una columna */
+.cdk-drag-placeholder {
+  opacity: 0.4;
+  background: #e0e0e0;
+  border: 2px dashed #9e9e9e;
+}
+
+/* Animación de regreso de columna */
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Drop list de columnas cuando se está arrastrando sobre ella */
+.board.cdk-drop-list-dragging .column-drag-wrapper:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

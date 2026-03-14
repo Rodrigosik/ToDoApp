@@ -4,9 +4,21 @@
       <app-sync-status />
     </div>
   </div>
-  <div class="board">
-    @for (column of columnList(); track column.id) {
-      <app-column [column]="column" (taskMoved)="onTaskMoved($event)" />
+  <div
+    class="board"
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    [cdkDropListData]="columnList()"
+    (cdkDropListDropped)="onColumnDrop($event)"
+  >
+    @for (column of columnList(); track column.id; let i = $index) {
+      <div cdkDrag class="column-drag-wrapper">
+        <app-column
+          [column]="column"
+          [connectedLists]="columnIds()"
+          (taskMoved)="onTaskMoved($event)"
+        />
+      </div>
     }
 
     <div>

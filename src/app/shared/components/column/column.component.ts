@@ -1,3 +1,4 @@
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, HostListener, inject, input, output, signal } from '@angular/core';
 import { FreyButtonDirective } from 'freya/button';
 import { FreyModalConfigModel, FreyModalService } from 'freya/modal';
@@ -13,16 +14,19 @@ import { TaskFormComponent } from '../task-form/task-form.component';
 
 @Component({
   selector: 'app-column',
-  imports: [TaskCardComponent, FreyButtonDirective, LucideAngularModule, MenuComponent],
+  imports: [
+    TaskCardComponent,
+    FreyButtonDirective,
+    LucideAngularModule,
+    MenuComponent,
+    DragDropModule,
+  ],
   templateUrl: './column.component.html',
   styleUrl: './column.component.scss',
-  host: {
-    '(drop)': 'onDrop($event)',
-    '(dragover)': 'onDragOver($event)',
-  },
 })
 export class ColumnComponent {
   column = input<ColumnModel>();
+  connectedLists = input<string[]>([]);
   taskMoved = output<any>();
   showMenu = signal(false);
   menuOptions = [
@@ -57,19 +61,22 @@ export class ColumnComponent {
     });
   }
 
-  onDragStart(event: DragEvent, task: TaskModel): void {
-    event.dataTransfer?.setData('taskId', task.id);
-  }
+  onTaskDrop(event: CdkDragDrop<TaskModel[]>): void {
+    const columnId = this.column().id;
 
-  onDragOver(event: DragEvent): void {
-    event.preventDefault();
-  }
-
-  onDrop(event: DragEvent): void {
-    event.preventDefault();
-    const taskId = event.dataTransfer?.getData('taskId');
-    if (taskId) {
-      this.taskMoved.emit({ taskId, targetColumnId: this.column().id });
+    if (event.previousContainer === event.container) {
+      // Reordenar dentro de la misma columna
+      const taskIds = event.container.data.map(task => task.id);
+      moveItemInArray(taskIds, event.previousIndex, event.currentIndex);
+      this.boardState.reorderTasks(columnId, taskIds);
+    } else {
+      // Mover entre columnas
+      const task = event.previousContainer.data[event.previousIndex];
+      this.taskMoved.emit({
+        taskId: task.id,
+        targetColumnId: columnId,
+        targetIndex: event.currentIndex,
+      });
     }
   }
 

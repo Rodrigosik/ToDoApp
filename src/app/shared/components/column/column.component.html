@@ -24,7 +24,18 @@
     Agregar nueva Tarea
   </button>
 
-  @for (task of column().tasks; track task.id) {
-    <app-task-card [task]="task" (dragstart)="onDragStart($event, task)" />
-  }
+  <div
+    cdkDropList
+    [id]="'task-list-' + column().id"
+    [cdkDropListData]="column().tasks"
+    [cdkDropListConnectedTo]="connectedLists()"
+    (cdkDropListDropped)="onTaskDrop($event)"
+    class="task-list"
+  >
+    @for (task of column().tasks; track task.id) {
+      <div cdkDrag class="task-item">
+        <app-task-card [task]="task" />
+      </div>
+    }
+  </div>
 </div>
