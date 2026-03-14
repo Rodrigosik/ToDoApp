@@ -1,59 +1,47 @@
-.sync-status {
+.status {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 0.5rem 1rem;
-  background: #e8f5e9;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  color: #2e7d32;
-
-  &.offline {
-    background: #fff3e0;
-    color: #e65100;
-  }
+  gap: 12px;
+  font-family: Arial, sans-serif;
 }
 
-.status-indicator {
+.status__icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  font-weight: bold;
 }
 
-.status-text {
+.status__content {
   display: flex;
-  align-items: center;
-  gap: 0.25rem;
+  flex-direction: column;
 }
 
-.spinning {
-  animation: spin 1s linear infinite;
+.status__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c2c2c;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.status__description {
+  margin: 0;
+  font-size: 14px;
+  color: #8a8f98;
 }
 
-.last-sync {
-  font-size: 0.75rem;
-  opacity: 0.7;
+.status__button {
+  height: 20px;
+  margin-top: 10px;
 }
 
-.retry-btn {
-  padding: 0.25rem 0.75rem;
-  background: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.75rem;
+// .status__lucide--online {
+//   color: #0df26c;
+// }
 
-  &:hover {
-    background: #45a049;
-  }
+.status__lucide--offline {
+  color: #f59e0b;
 }

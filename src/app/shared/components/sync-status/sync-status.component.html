@@ -1,33 +1,47 @@
-<div class="sync-status" [class.offline]="!syncService.isOnline()">
-  <div class="status-indicator">
+<div class="status">
+  <div class="status__icon">
     @if (syncService.isOnline()) {
-      <lucide-icon [img]="icons.wifi" [size]="16" />
+      <lucide-icon
+        class="status__lucide status__lucide--online"
+        [img]="icons.wifi"
+        [size]="16"
+      />
     } @else {
-      <lucide-icon [img]="icons.wifiOff" [size]="16" />
+      <lucide-icon
+        class="status__lucide status__lucide--offline"
+        [img]="icons.wifiOff"
+        [size]="16"
+      />
     }
+  </div>
 
-    <span class="status-text">
+  <div class="status__content">
+    <p class="status__title">
       @if (syncService.isSyncing()) {
-        <lucide-icon [img]="icons.refreshCw" [size]="14" class="spinning" />
         Sincronizando...
       } @else if (syncService.pendingSyncs() > 0) {
         {{ syncService.pendingSyncs() }} cambios pendientes
       } @else if (syncService.isOnline()) {
-        <lucide-icon [img]="icons.checkCircle" [size]="14" />
         Sincronizado
       } @else {
         Modo offline
       }
-    </span>
+    </p>
+    @if (syncService.lastSyncTime()) {
+      <p class="status__description">
+        Última sync: {{ syncService.lastSyncTime() | date: 'short' }}
+      </p>
+    }
+
+    @if (syncService.pendingSyncs() > 0 && syncService.isOnline()) {
+      <button
+        class="status__button"
+        freyButton
+        size="small"
+        (click)="syncService.retrySyncPending()"
+      >
+        Reintentar
+      </button>
+    }
   </div>
-
-  @if (syncService.lastSyncTime()) {
-    <div class="last-sync">
-      Última sync: {{ syncService.lastSyncTime() | date: 'short' }}
-    </div>
-  }
-
-  @if (syncService.pendingSyncs() > 0 && syncService.isOnline()) {
-    <button class="retry-btn" (click)="syncService.retrySyncPending()">Reintentar</button>
-  }
 </div>

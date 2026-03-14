@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { FreyButtonDirective } from 'freya/button';
 import {
   CircleCheckBig,
   LucideAngularModule,
@@ -12,7 +13,7 @@ import { SyncService } from 'src/app/core/services';
 @Component({
   selector: 'app-sync-status',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, FreyButtonDirective],
   templateUrl: './sync-status.component.html',
   styleUrl: './sync-status.component.scss',
 })
