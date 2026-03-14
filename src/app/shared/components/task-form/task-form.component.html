@@ -6,6 +6,7 @@
       formControlName="title"
       placeholder="Ingresa el nombre de la tarea"
       [maxLength]="50"
+      freyInputValidation
     />
   </frey-field>
 
@@ -18,6 +19,7 @@
       placeholder="Ingresa la descripción de la tarea"
       [maxlength]="500"
       style="min-height: 150px"
+      freyInputValidation
     ></textarea>
   </frey-field>
 
@@ -48,7 +50,12 @@
 
   <frey-field>
     <frey-label>Etiquetas (separadas por comas)</frey-label>
-    <input freyInput formControlName="tags" placeholder="Bug, Feature, Urgente" />
+    <input
+      freyInput
+      formControlName="tags"
+      placeholder="Bug, Feature, Urgente"
+      freyInputValidation
+    />
   </frey-field>
 
   <div>

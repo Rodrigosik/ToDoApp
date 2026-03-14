@@ -2,6 +2,7 @@ import { Component, inject, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FreyButtonDirective } from 'freya/button';
 import { FreyFormModule } from 'freya/form';
+import { FreyInputValidationDirective } from 'freya/input-validation';
 import { LucideAngularModule, X } from 'lucide-angular';
 
 @Component({
@@ -11,6 +12,7 @@ import { LucideAngularModule, X } from 'lucide-angular';
     FreyFormModule,
     FreyButtonDirective,
     LucideAngularModule,
+    FreyInputValidationDirective,
   ],
   templateUrl: './column-form.component.html',
   styleUrl: './column-form.component.scss',

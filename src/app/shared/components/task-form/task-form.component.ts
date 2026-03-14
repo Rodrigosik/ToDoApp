@@ -4,6 +4,7 @@ import { FreyButtonDirective } from 'freya/button';
 import { FreyCheckboxComponent } from 'freya/checkbox';
 import { FreyDatepickerModule } from 'freya/datepicker';
 import { FreyFormModule } from 'freya/form';
+import { FreyInputValidationDirective } from 'freya/input-validation';
 import { CalendarDays, LucideAngularModule } from 'lucide-angular';
 import { PRIORITYLIST } from 'src/app/utils/constants';
 
@@ -16,6 +17,7 @@ import { PRIORITYLIST } from 'src/app/utils/constants';
     LucideAngularModule,
     FreyButtonDirective,
     FreyCheckboxComponent,
+    FreyInputValidationDirective,
   ],
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.scss',
