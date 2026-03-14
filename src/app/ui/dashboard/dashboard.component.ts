@@ -6,7 +6,7 @@ import {
   ColumnComponent,
   ColumnFormComponent,
   SyncStatusComponent,
-} from 'src/app/shared';
+} from 'src/app/shared/components';
 
 @Component({
   selector: 'app-dashboard',

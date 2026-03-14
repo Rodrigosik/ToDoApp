@@ -2,7 +2,7 @@ export class TaskModel {
   id: string;
   title: string;
   description: string;
-  priority: 'low' | 'medium' | 'high';
+  priority: number;
   tags: string[];
   dueDate: Date | null;
   status: string;
