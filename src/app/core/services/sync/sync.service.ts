@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { catchError, of, tap } from 'rxjs';
 import { ApiService } from '../api/api.service';
 import { ColumnModel } from '../column/column.model';
+import { StorageService } from '../storage/storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ export class SyncService {
   lastSyncTime = signal<Date>(null);
 
   private readonly api = inject(ApiService);
+  private readonly storage = inject(StorageService);
 
   constructor() {
     this.setupOnlineDetection();
@@ -49,7 +51,17 @@ export class SyncService {
   retrySyncPending(): void {
     if (this.pendingSyncs() > 0 && this.isOnline()) {
       console.log('Reintentando sincronización pendiente...');
-      //TODO: implementar lógica para reintentar operaciones específicas
+
+      const currentColumns = this.storage.getColumns();
+
+      if (currentColumns.length > 0) {
+        // Sincronizar el estado actual con la API
+        this.syncColumns(currentColumns);
+      } else {
+        // No hay datos para sincronizar, resetear contador
+        this.pendingSyncs.set(0);
+        console.log('No hay datos pendientes para sincronizar');
+      }
     }
   }
 
