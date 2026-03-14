@@ -9,6 +9,8 @@ import {
   TaskModel,
   TaskService,
 } from 'src/app/core/services';
+
+import { ColumnUpdateComponent } from '../column-update/column-update.component';
 import { MenuComponent } from '../menu/menu.component';
 import { TaskCardComponent } from '../task-card/task-card.component';
 import { TaskFormComponent } from '../task-form/task-form.component';
@@ -27,7 +29,10 @@ export class ColumnComponent {
   column = input<ColumnModel>();
   taskMoved = output<any>();
   showMenu = signal(false);
-  menuOptions = [{ label: 'Eliminar', value: 'delete' }];
+  menuOptions = [
+    { label: 'Editar', value: 'edit' },
+    { label: 'Eliminar', value: 'delete' },
+  ];
 
   readonly icons = {
     ellipsis: Ellipsis,
@@ -43,6 +48,16 @@ export class ColumnComponent {
       if (result) {
         // Agregar la tarea usando el servicio con persistencia offline
         this.taskService.addTask(this.column().id, result);
+      }
+    });
+  }
+
+  editColumn(): void {
+    this.openColumnForm().subscribe(result => {
+      if (result) {
+        // Editar la columna usando el servicio con persistencia offline
+        const updatedColumn = { ...this.column(), title: result };
+        this.columnService.updateColumn(this.column().id, updatedColumn);
       }
     });
   }
@@ -73,6 +88,9 @@ export class ColumnComponent {
     if (option === 'delete') {
       this.columnService.deleteColumn(this.column().id);
     }
+    if (option === 'edit') {
+      this.editColumn();
+    }
   }
 
   @HostListener('document:click')
@@ -88,5 +106,14 @@ export class ColumnComponent {
     config.customWidth.medium = 50;
     config.customWidth.small = 60;
     return this.modalService.openModal(TaskFormComponent, config) as Observable<any>;
+  }
+
+  private openColumnForm(): Observable<any> {
+    const config = new FreyModalConfigModel();
+    config.customWidth.large = 20;
+    config.customWidth.medium = 40;
+    config.customWidth.small = 60;
+    config.dataSource = this.column().title;
+    return this.modalService.openModal(ColumnUpdateComponent, config) as Observable<any>;
   }
 }

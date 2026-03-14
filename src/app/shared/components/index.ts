@@ -1,4 +1,5 @@
 export { ColumnFormComponent } from './column-form/column-form.component';
+export { ColumnUpdateComponent } from './column-update/column-update.component';
 export { ColumnComponent } from './column/column.component';
 export { MenuComponent } from './menu/menu.component';
 export { SyncStatusComponent } from './sync-status/sync-status.component';

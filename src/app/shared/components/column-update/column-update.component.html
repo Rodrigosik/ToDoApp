@@ -1,0 +1,17 @@
+<form class="column-form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <frey-field>
+    <frey-label>Nombre de la columna</frey-label>
+    <input
+      freyInput
+      formControlName="columnName"
+      placeholder="Ingresa el nombre de la columna"
+      [maxLength]="50"
+    />
+  </frey-field>
+  <div class="column-form__footer">
+    <button freyButton type="submit">Guardar</button>
+    <button freyButton type="button" variant="ghost" (click)="closeEvent.emit()">
+      Cancelar
+    </button>
+  </div>
+</form>
