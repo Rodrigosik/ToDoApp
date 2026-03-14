@@ -1,8 +1,18 @@
+:host {
+  --column-bg: #f2f2f2;
+  --column-border: #cbcbcb;
+  --column-radius: 0.5rem;
+}
+
 .column {
-  min-width: 300px;
-  background: #ffcccc;
-  border-radius: 8px;
+  background-color: var(--column-bg);
+  border: 1px solid var(--column-border);
+  width: 18.75rem; /* 300px */
+  border-radius: var(--column-radius);
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem; /* 10px */
 }
 
 .column__header {

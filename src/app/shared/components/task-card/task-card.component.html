@@ -1,21 +1,26 @@
-<div
-  class="task-card"
-  draggable="true"
-  [class.priority-high]="task().priority === 'high'"
-  [class.priority-medium]="task().priority === 'medium'"
-  [class.priority-low]="task().priority === 'low'"
->
-  <h4>{{ task().title }}</h4>
-  <p>{{ task().description }}</p>
-
-  <div class="task-meta">
-    <span class="priority">{{ task().priority }}</span>
-    @if (task().dueDate) {
-      <span class="due-date"> {{ task().dueDate }}</span>
-    }
+<div class="task-card" draggable="true">
+  <div class="task-card__body">
+    <h4>{{ task().title }}</h4>
+    <p class="task-card__description">{{ task().description }}</p>
   </div>
 
-  <div class="tags">
+  <div class="task-card__meta">
+    <i-lucide class="task-card__calendar" [img]="icons.calendarDays"></i-lucide>
+    @if (task().dueDate) {
+      <span class="due-date"> {{ task().dueDate | date: 'dd/MM/yyyy' }}</span>
+    }
+    <div class="task-card__priority-container">
+      <div
+        class="task-card__priority"
+        [class.task-card__priority--low]="task().priority === priorityEnum.LOW"
+        [class.task-card__priority--medium]="task().priority === priorityEnum.MEDIUM"
+        [class.task-card__priority--high]="task().priority === priorityEnum.HIGH"
+        [freyTooltip]="task().priority | lookup: priorityList"
+      ></div>
+    </div>
+  </div>
+
+  <div class="task-card__tags">
     @for (tag of task().tags; track tag) {
       <span class="tag">{{ tag }}</span>
     }

@@ -1,0 +1,59 @@
+:host {
+  --color-background: white;
+  --color-border: #cbcbcb;
+  --color-description: #7e7e7e;
+  --color-priority-low: #bdbdbd;
+  --color-priority-medium: #90caf9;
+  --color-priority-high: #ef9a9a;
+}
+
+.task-card {
+  padding: 0.625rem;
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.task-card__description {
+  color: var(--color-description);
+}
+
+.task-card__meta {
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding-bottom: 0.3125rem;
+}
+
+.task-card__calendar {
+  width: 1.125rem;
+}
+
+.task-card__priority-container {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.task-card__priority {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+}
+
+.task-card__priority--low {
+  background: var(--color-priority-low);
+}
+
+.task-card__priority--medium {
+  background: var(--color-priority-medium);
+}
+
+.task-card__priority--high {
+  background: var(--color-priority-high);
+}
