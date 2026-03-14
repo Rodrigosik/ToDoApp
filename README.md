@@ -1,86 +1,250 @@
 # ToDoApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0.
+Aplicación Kanban/ToDo desarrollada con Angular 21.1.0, implementando arquitectura Domain Driven Design (DDD), persistencia offline y sincronización con API.
 
-## Development server
+## 📋 Requisitos
 
-To start a local development server, run:
+- **Node.js**: v18.x o superior
+- **npm**: v10.9.0 o superior
+- **Angular CLI**: v21.1.0 o superior
 
+## 🚀 Cómo levantar el proyecto
+
+1. **Instalar dependencias**:
 ```bash
-ng serve
+npm install
+# o usar el script personalizado
+npm run freya:install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+2. **Iniciar el servidor de desarrollo**:
 ```bash
-ng generate component component-name
+npm start
+# o alternativamente
+ng serve -o
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+El navegador se abrirá automáticamente en `http://localhost:4200/`. La aplicación se recargará automáticamente cuando modifiques los archivos fuente.
 
-```bash
-ng generate --help
+## 📚 Librerías y Tecnologías
+
+### Core
+- **@angular/core**: ^21.1.0 - Framework principal
+- **@angular/forms**: ^21.1.0 - Gestión de formularios reactivos
+- **@angular/router**: ^21.1.0 - Sistema de navegación
+- **rxjs**: ~7.8.0 - Programación reactiva con Observables
+
+### UI Components
+- **freya**: ^0.0.1 (local) - Librería personalizada de componentes UI
+- **lucide-angular**: ^0.577.0 - Iconos modernos y ligeros
+
+### 🔍 Code Quality Tools
+
+## ESLint & Angular ESLint
+- **eslint** (^8.57.1): Linting JavaScript/TypeScript
+- **@angular-eslint/builder** (^21.3.0): Builder de Angular ESLint
+- **@angular-eslint/eslint-plugin** (^21.3.0): Reglas específicas de Angular
+- **@angular-eslint/eslint-plugin-template** (^21.3.0): Linting de templates
+- **@typescript-eslint/eslint-plugin** (^7.18.0): Plugin ESLint para TypeScript
+- **@typescript-eslint/parser** (^7.18.0): Parser TypeScript para ESLint
+
+## Prettier
+- **prettier** (^3.8.1): Formateador de código
+- **prettier-eslint** (^16.4.2): Integración Prettier + ESLint
+- **eslint-config-prettier** (^10.1.8): Desactiva reglas que conflictúan con Prettier
+- **eslint-plugin-prettier** (^5.5.5): Ejecuta Prettier como regla de ESLint
+
+## Git Hooks & Commit Standards
+- **husky** (^9.1.7): Gestión de Git hooks
+- **lint-staged** (^15.3.1): Ejecuta linters en archivos staged
+- **@commitlint/cli** (^20.4.4): Linting de mensajes de commit
+- **@commitlint/config-conventional** (^20.4.4): Estándares de commits convencionales
+
+
+
+
+## 🏗️ Arquitectura y Características
+
+### Metodología Offline First
+
+Este proyecto implementa la metodología **Offline First**, que prioriza la funcionalidad sin conexión como experiencia principal:
+
+**Principios aplicados:**
+- 🔄 **Persistencia local primero**: Todas las operaciones se guardan en localStorage antes de intentar sincronizar
+- ⚡ **Cero latencia percibida**: La UI responde instantáneamente sin esperar respuestas del servidor
+- 🌐 **Sincronización inteligente**: Los datos se sincronizan automáticamente cuando hay conexión disponible
+- 🔌 **Resiliente a desconexiones**: La app funciona completamente offline, sincronizando al reconectar
+- 📊 **Estado de sync visible**: El usuario siempre sabe si hay datos pendientes de sincronizar
+
+**Ventajas para el usuario:**
+- La aplicación funciona siempre, con o sin internet
+- Experiencia fluida sin esperas por red lenta
+- No se pierden datos si se cae la conexión
+
+### Domain Driven Design (DDD)
+
+El proyecto implementa **Domain Driven Design** con una separación clara de responsabilidades:
+
+```
+src/app/
+├── core/
+│   ├── features/          # Módulos de dominio (board)
+│   │   └── board/
+│   │       ├── models/    # Entidades del dominio
+│   │       ├── repositories/  # Acceso a datos
+│   │       └── services/  # Lógica de negocio
+│   └── shared/            # Servicios compartidos
+│       ├── config/        # Configuraciones
+│       ├── interfaces/    # Contratos
+│       ├── repositories/  # Repositorios base
+│       └── services/      # Servicios base
+├── shared/                # Componentes reutilizables
+└── ui/                    # Componentes de presentación
 ```
 
-## Building
+**Beneficios de DDD aplicado:**
+- **Separación de responsabilidades**: Cada capa tiene una función específica
+- **Repositorios**: Abstraen la persistencia (localStorage actualmente, fácil cambio a API)
+- **Servicios de dominio**: Encapsulan lógica de negocio compleja
+- **Modelos**: Representan entidades del dominio (`ColumnModel`, `TaskModel`)
+- **Mantenibilidad**: Código organizado y fácil de extender
 
-To build the project run:
+### Persistencia Offline
 
-```bash
-ng build
+El sistema implementa **persistencia completa offline** usando localStorage:
+
+#### StorageService (Shared)
+Servicio genérico para acceso a localStorage con responsabilidad única:
+```typescript
+// src/app/core/shared/services/storage/storage.service.ts
+- get<T>(key: string): Obtiene y deserializa
+- set<T>(key, value): Serializa y guarda
+- remove(key): Elimina clave específica
+- clear(): Limpia todo el storage
+- has(key): Verifica existencia
+- clearByPrefix(prefix): Limpieza selectiva
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+#### Configuración Centralizada
+```typescript
+// src/app/core/shared/config/storage.config.ts
+STORAGE_CONFIG = {
+  KEYS: { COLUMNS, TASKS, METADATA },
+  PREFIX: { DEV, PROD, TEST }
+}
 ```
 
-## Running end-to-end tests
+#### Repositorios con Persistencia
+Los repositorios (`ColumnRepository`, `TaskRepository`) implementan el patrón Repository:
+- Operaciones CRUD completas
+- Persistencia automática en localStorage
+- Retornan Observables para consistencia con futuros endpoints HTTP
+- Desacoplamiento total de la UI
 
-For end-to-end (e2e) testing, run:
+**Ventajas:**
+- ✅ Funciona completamente sin conexión
+- ✅ Datos persistentes entre recargas
+- ✅ Fácil migración a backend (solo cambiar repositorios)
+- ✅ Manejo de errores (QuotaExceededError)
 
-```bash
-ng e2e
+### Sincronización con API
+
+Sistema de **sincronización automática online/offline**:
+
+#### BaseSyncService (Shared)
+Servicio base abstracto para sincronización reutilizable:
+```typescript
+// src/app/core/shared/services/sync/base-sync.service.ts
+Signals públicos:
+- isSyncing: Signal<boolean>
+- isOnline: Signal<boolean>
+- pendingSyncs: Signal<number>
+- lastSyncTime: Signal<Date | null>
+
+Métodos:
+- sync(data): Sincroniza con API si hay conexión
+- retrySyncPending(): Reintenta sincronizaciones fallidas
+- setupOnlineDetection(): Detecta cambios online/offline
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+#### BoardSyncService
+Implementación específica para el dominio Board:
+```typescript
+// Extiende BaseSyncService<ColumnModel>
+syncColumns(columns): Sincroniza columnas con la API
+```
 
-## Code Quality Tools
+**Flujo de Sincronización:**
+1. **Online**: Guarda en localStorage + sincroniza con API inmediatamente
+2. **Offline**: Guarda en localStorage + incrementa `pendingSyncs`
+3. **Reconexión**: Detecta evento `online` y reintenta sincronizaciones pendientes
+4. **Optimistic Updates**: UI se actualiza inmediatamente, sincronización en background
 
-This project includes the following tools for code quality and consistency:
+**Componente de Estado:**
+```typescript
+// src/app/shared/components/sync-status
+Muestra estado de sincronización en tiempo real usando signals
+```
 
-### ESLint & Angular ESLint
-- **eslint** (^8.57.1): JavaScript/TypeScript linting
-- **@angular-eslint/builder** (^21.3.0): Angular ESLint builder
-- **@angular-eslint/eslint-plugin** (^21.3.0): Angular-specific ESLint rules
-- **@angular-eslint/eslint-plugin-template** (^21.3.0): Angular template linting
-- **@angular-eslint/schematics** (^21.3.0): Angular ESLint schematics
-- **@angular-eslint/template-parser** (^21.3.0): Parser for Angular templates
-- **@typescript-eslint/eslint-plugin** (^7.18.0): TypeScript ESLint plugin
-- **@typescript-eslint/parser** (^7.18.0): TypeScript parser for ESLint
-- **@typescript-eslint/utils** (^8.57.0): Utilidades internas para plugins de ESLint
+### Gestión de Estado con Signals
 
-### Prettier
-- **prettier** (^3.8.1): Code formatter
-- **prettier-eslint** (^16.4.2): Integration between Prettier and ESLint
-- **eslint-config-prettier** (^10.1.8): Disables ESLint rules that conflict with Prettier
-- **eslint-plugin-prettier** (^5.5.5): Runs Prettier as an ESLint rule
+La aplicación usa **Angular Signals** como gestor de estado reactivo:
 
-### Git Hooks & Commit Standards
-- **husky** (^9.1.7): Git hooks management
-- **lint-staged** (^15.3.1): Run linters on git staged files
-- **@commitlint/cli** (^20.3.1): Commit message linting
-- **@commitlint/config-conventional** (^20.3.1): Conventional commit standards
+#### Signals en lugar de NgRx
 
-## Additional Resources
+**¿Por qué Signals y NO NgRx?**
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Angular 16+ introduce **Signals** como sistema nativo de reactividad granular:
+
+❌ **NgRx ya NO es necesario para la mayoría de aplicaciones** porque:
+- Signals resuelven el mismo problema con **menos código y complejidad**
+- Reactividad granular native de Angular
+- Mejor rendimiento (actualizaciones quirúrgicas, no difting de zonas)
+- Type-safe por defecto sin boilerplate
+- Change Detection optimizada automáticamente
+
+✅ **Ventajas de Signals sobre NgRx:**
+- **Menos boilerplate**: No requiere actions, reducers, effects, selectors
+- **Simplicidad**: `signal()`, `computed()`, `effect()` vs Actions/Reducers/Effects
+- **Performance nativa**: Integrado con Change Detection de Angular
+- **Curva de aprendizaje**: Más intuitivo para desarrolladores
+- **Mantenibilidad**: Menos archivos, menos complejidad
+
+#### Implementación con Signals
+
+**BoardStateService** - Gestor de estado centralizado:
+```typescript
+// src/app/core/features/board/services/board-state.service.ts
+readonly columnsSignal = signal<ColumnModel[]>([]);
+readonly columns = this.columnsSignal.asReadonly();
+
+// Actualizaciones reactivas
+columnsSignal.update(cols => [...cols, newColumn]);
+columnsSignal.set(columns);
+```
+
+**Componentes reactivos:**
+```typescript
+// src/app/ui/dashboard/dashboard.component.ts
+isAddingColumn = signal(false);
+columnList = computed(() => this.boardState.columns());
+
+toggleAddColumn() {
+  this.isAddingColumn.update(value => !value);
+}
+```
+
+**Beneficios en la práctica:**
+- Estado reactivo sin servicios pesados
+- Computed values automáticos
+- Actualizaciones optimistas instantáneas
+- Sincronización con RxJs cuando es necesario (HTTP)
+
+## 📝 Scripts Disponibles
+
+```bash
+npm start              # Inicia servidor de desarrollo
+npm run build          # Build de producción
+npm run freya:install  # Instalación limpia de dependencias
+npm run git:pull:dev   # Pull desde rama build-dev
+```
