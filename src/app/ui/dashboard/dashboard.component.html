@@ -1,4 +1,4 @@
-<div>
+<div class="header">
   <div class="sync-status-wrapper">
     <app-sync-status />
   </div>
@@ -11,7 +11,7 @@
 
   <div>
     @if (!isAddingColumn()) {
-      <button freyButton (click)="toggleAddColumn()">
+      <button class="add" freyButton (click)="toggleAddColumn()">
         <i-lucide [img]="icons.plus"></i-lucide>
         <span>Agregar Columna</span>
       </button>

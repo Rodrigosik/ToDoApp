@@ -1,11 +1,19 @@
+:host {
+  --column-bg: #f2f2f2;
+  --column-border: #cbcbcb;
+  --column-radius: 0.5rem;
+}
+
 .column-form {
-  background: #f2f2f2;
-  padding: 10px;
-  border-radius: 10px;
+  background: var(--column-bg);
+  padding: 0.625rem;
+  border-radius: var(--column-radius);
+  border: 1px solid var(--column-border);
+  width: 18.75rem;
 }
 
 .column-form__footer {
   display: flex;
-  gap: 5px;
-  margin-top: 10px;
+  gap: 0.3125rem;
+  margin-top: 0.625rem;
 }

@@ -2,10 +2,16 @@ import { Component, inject, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FreyButtonDirective } from 'freya/button';
 import { FreyFormModule } from 'freya/form';
+import { LucideAngularModule, X } from 'lucide-angular';
 
 @Component({
   selector: 'app-column-form',
-  imports: [ReactiveFormsModule, FreyFormModule, FreyButtonDirective],
+  imports: [
+    ReactiveFormsModule,
+    FreyFormModule,
+    FreyButtonDirective,
+    LucideAngularModule,
+  ],
   templateUrl: './column-form.component.html',
   styleUrl: './column-form.component.scss',
 })
@@ -13,6 +19,10 @@ export class ColumnFormComponent {
   formGroup: FormGroup;
   closeForm = output();
   nameColumn = output<string>();
+
+  readonly icons = {
+    x: X,
+  };
 
   private readonly formbuilder = inject(FormBuilder);
 

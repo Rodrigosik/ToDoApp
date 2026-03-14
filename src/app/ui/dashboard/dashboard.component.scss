@@ -1,6 +1,22 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  padding: 1rem;
+}
+
+.sync-status-wrapper,
+.add {
+  width: 18.75rem;
+}
+
 .board {
   display: flex;
   gap: 1rem;
   padding: 1rem;
   overflow-x: auto;
+  flex: 1;
 }
