@@ -78,9 +78,14 @@ export class ColumnComponent {
     }
   }
 
-  toggleMenu(event: MouseEvent): void {
-    event.stopPropagation();
-    this.showMenu.set(!this.showMenu());
+  toggleMenu(): void {
+    const isOpen = this.showMenu();
+
+    if (!isOpen) {
+      setTimeout(() => this.showMenu.set(true), 0);
+    } else {
+      this.showMenu.set(false);
+    }
   }
 
   onMenuSelect(option: string): void {
@@ -110,7 +115,7 @@ export class ColumnComponent {
 
   private openColumnForm(): Observable<any> {
     const config = new FreyModalConfigModel();
-    config.customWidth.large = 20;
+    config.customWidth.large = 30;
     config.customWidth.medium = 40;
     config.customWidth.small = 60;
     config.dataSource = this.column().title;
