@@ -1,6 +1,7 @@
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FreyButtonDirective } from 'freya/button';
+import { FreyCheckboxComponent } from 'freya/checkbox';
 import { FreyDatepickerModule } from 'freya/datepicker';
 import { FreyFormModule } from 'freya/form';
 import { CalendarDays, LucideAngularModule } from 'lucide-angular';
@@ -14,6 +15,7 @@ import { PRIORITYLIST } from 'src/app/utils/constants';
     FreyDatepickerModule,
     LucideAngularModule,
     FreyButtonDirective,
+    FreyCheckboxComponent,
   ],
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.scss',
@@ -31,6 +33,11 @@ export class TaskFormComponent implements OnInit {
   };
 
   private readonly formbuilder = inject(FormBuilder);
+
+  get statusText(): string {
+    const status = this.formGroup.get('status')?.value;
+    return status ? 'Completada' : 'Pendiente';
+  }
 
   constructor() {
     this.buildForm();
@@ -57,6 +64,7 @@ export class TaskFormComponent implements OnInit {
       priority: [],
       tags: [], //TODO:
       dueDate: [null, [Validators.required]],
+      status: [],
     });
   }
 }

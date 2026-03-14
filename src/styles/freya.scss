@@ -55,3 +55,13 @@ frey-prefix i-lucide svg {
   width: 16px;
   height: 16px;
 }
+
+.frey-checkbox__icon-container {
+  display: flex;
+  align-items: center;
+}
+
+frey-checkbox .frey-checkbox__icon svg,
+frey-checkbox .frey-checkbox__icon-container svg {
+  height: 16px;
+}

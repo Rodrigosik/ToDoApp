@@ -44,6 +44,12 @@
     />
   </frey-field>
 
+  <div>
+    <frey-checkbox formControlName="status"
+      >Estado de la tarea ({{ statusText }})</frey-checkbox
+    >
+  </div>
+
   <div class="column-form__footer">
     <button freyButton type="submit">Guardar</button>
     <button freyButton type="button" variant="ghost" (click)="closeEvent.emit()">

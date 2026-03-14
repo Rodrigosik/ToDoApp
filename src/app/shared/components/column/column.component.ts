@@ -36,14 +36,7 @@ export class ColumnComponent {
     this.openTaskForm().subscribe(result => {
       if (result) {
         // Agregar la tarea usando el servicio con persistencia offline
-        this.taskService.addTask(this.column().id, {
-          title: result.title,
-          description: result.description,
-          priority: result.priority || 'medium',
-          tags: result.tags || [],
-          dueDate: result.dueDate || null,
-          status: 'pending',
-        });
+        this.taskService.addTask(this.column().id, result);
       }
     });
   }

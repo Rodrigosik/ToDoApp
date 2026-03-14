@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, HostListener, inject, input, signal } from '@angular/core';
 import { FreyButtonDirective } from 'freya/button';
+import { FreyCheckboxComponent } from 'freya/checkbox';
 import { FreyModalConfigModel, FreyModalService } from 'freya/modal';
 import { FreyTooltipDirective } from 'freya/tooltip';
 import { CalendarDays, Ellipsis, LucideAngularModule } from 'lucide-angular';
@@ -26,6 +27,7 @@ enum PriorityEnum {
     LookupPipe,
     MenuComponent,
     FreyButtonDirective,
+    FreyCheckboxComponent,
   ],
   templateUrl: './task-card.component.html',
   styleUrl: './task-card.component.scss',

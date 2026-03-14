@@ -5,6 +5,6 @@ export class TaskModel {
   priority: number;
   tags: string[];
   dueDate: Date | null;
-  status: string;
+  status: boolean;
   columnId: string;
 }

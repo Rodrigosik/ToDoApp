@@ -39,6 +39,12 @@
     </div>
   </div>
 
+  <div>
+    <frey-checkbox [readonly]="true" [value]="task().status">
+      {{ task().status ? 'Completada' : 'Pendiente' }}
+    </frey-checkbox>
+  </div>
+
   <div class="task-card__tags">
     @for (tag of task().tags; track tag) {
       <span class="tag">{{ tag }}</span>
