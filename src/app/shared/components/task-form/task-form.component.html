@@ -1,1 +1,55 @@
-<p>task-form works!</p>
+<form class="column-form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <frey-field>
+    <frey-label>Nombre de la tarea</frey-label>
+    <input
+      freyInput
+      formControlName="title"
+      placeholder="Ingresa el nombre de la tarea"
+      [maxLength]="50"
+    />
+  </frey-field>
+
+  <frey-field>
+    <frey-label>Descripción de la tarea</frey-label>
+
+    <textarea
+      freyTextarea
+      formControlName="description"
+      placeholder="Ingresa la descripción de la tarea"
+      [maxlength]="500"
+    ></textarea>
+  </frey-field>
+
+  <frey-field>
+    <frey-label>Prioridad</frey-label>
+    <frey-select formControlName="priority">
+      @for (priority of priorityList; track priority.id) {
+        <frey-option [value]="priority.id">
+          {{ priority.name }}
+        </frey-option>
+      }
+    </frey-select>
+  </frey-field>
+
+  <frey-field>
+    <frey-prefix (click)="datepicker.open()">
+      <i-lucide [img]="icons.calendar"></i-lucide>
+    </frey-prefix>
+    <frey-label>Fecha límite</frey-label>
+    <input
+      freyInput
+      formControlName="dueDate"
+      placeholder="Fecha límite"
+      [freyDatepicker]="datepicker"
+    />
+  </frey-field>
+
+  <div class="column-form__footer">
+    <button freyButton type="submit">Guardar</button>
+    <button freyButton type="button" variant="ghost" (click)="closeEvent.emit()">
+      Cancelar
+    </button>
+  </div>
+</form>
+
+<frey-datepicker #datepicker> </frey-datepicker>

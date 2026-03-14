@@ -1,16 +1,27 @@
 import { Component, inject, signal } from '@angular/core';
+import { FreyButtonDirective } from 'freya/button';
+import { LucideAngularModule, Plus } from 'lucide-angular';
 import { ColumnModel, TaskService } from 'src/app/core/services';
 import { ColumnComponent, ColumnFormComponent } from 'src/app/shared';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ColumnComponent, ColumnFormComponent],
+  imports: [
+    ColumnComponent,
+    ColumnFormComponent,
+    LucideAngularModule,
+    FreyButtonDirective,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
   isAddingColumn = signal(false);
   columns = signal<ColumnModel[]>([]);
+
+  readonly icons = {
+    plus: Plus,
+  };
 
   private readonly taskService = inject(TaskService);
 
@@ -22,7 +33,6 @@ export class DashboardComponent {
     column.order = 0;
 
     this.columns.update(columns => [...columns, column]);
-    console.log(this.columns());
     this.toggleAddColumn();
   }
 

@@ -7,5 +7,4 @@ export class TaskModel {
   dueDate: Date | null;
   status: string;
   columnId: string;
-  createdAt: Date;
 }

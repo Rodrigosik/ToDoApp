@@ -1,0 +1,12 @@
+.column {
+  min-width: 300px;
+  background: #ffcccc;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.column__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

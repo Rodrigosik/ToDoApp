@@ -1,6 +1,15 @@
 <div class="column" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
-  <h3>{{ column().title }}</h3>
-  <button (click)="addTask()">Nueva Tarea</button>
+  <div class="column__header">
+    <h3 class="column__title">{{ column().title }}</h3>
+    <button freyButton size="small" variant="ghost" [iconOnly]="true">
+      <i-lucide [img]="icons.ellipsis"></i-lucide>
+    </button>
+  </div>
+
+  <button freyButton size="small" (click)="addTask()">
+    <i-lucide [img]="icons.plus"></i-lucide>
+    Agregar nueva Tarea
+  </button>
 
   @for (task of column().tasks; track task.id) {
     <app-task-card [task]="task" (dragstart)="onDragStart($event, task)" />

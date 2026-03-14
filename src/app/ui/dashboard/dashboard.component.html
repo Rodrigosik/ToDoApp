@@ -1,6 +1,9 @@
 <div class="board">
   @if (!isAddingColumn()) {
-    <button (click)="toggleAddColumn()">Agregar Columna</button>
+    <button freyButton (click)="toggleAddColumn()">
+      <i-lucide [img]="icons.plus"></i-lucide>
+      <span>Agregar Columna</span>
+    </button>
   } @else {
     <app-column-form
       (closeForm)="toggleAddColumn()"
